@@ -54,8 +54,8 @@ export default {
         updateProfile() {
             const userId = this.$route.params.id;
             const userDetails = {
-                firstName = this.firstName,
-                lastName = this.lastName,
+                firstName: this.firstName,
+                lastName: this.lastName,
                 email: this.email,
                 mealPreference: this.mealPreferences
             };
