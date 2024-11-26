@@ -22,13 +22,14 @@ export default {
             recipe: {}
         };
     },
-    created() {
+    async created() {
         const id = this.$route.params.id;
-        getRecipeById(id).then(response => {
-            this.recipe = response.data;
-        }).catch(error => {
+        try {
+            const response = await getRecipeById(id);
+            this.recipe = response;
+        } catch (error) {
             console.error('Error fetching recipe:', error);
-        });
+        }
     }
 };
 </script>

@@ -22,21 +22,25 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { getMealPlans } from '@/services/apiService';
 
 export default {
+    computed: {
+        ...mapGetters(['userId'])
+    },
     data() {
         return {
             mealPlan: null
         };
     },
-    created() {
-        const userId = this.$route.params.userId;
-        getMealPlans(userId).then(response => {
-            this.mealPlan = response.data;
-        }).catch(error => {
+    async created() {
+        try {
+            const response = await getMealPlans(this.userId);
+            this.mealPlan = response;
+        } catch (error) {
             console.error('Error fetching meal plan:', error);
-        });
+        }
     }
 };
 </script>

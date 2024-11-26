@@ -39,33 +39,32 @@ export default {
             mealPreferences: ''
         };
     },
-    created() {
-        this.fetchUserProfile();
+    async created() {
+        try {
+            const response = await getUserProfile(this.userId);
+            const user = response;
+            this.firstName = user.firstName;
+            this.lastName = user.lastName;
+            this.email = user.email;
+            this.mealPreferences = user.mealPreferences;
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+        }
     },
     methods: {
-        fetchUserProfile() {
-            getUserProfile(this.userId).then(response => {
-                const user = response.data;
-                this.firstName = user.firstName;
-                this.lastName = user.lastName;
-                this.email = user.email;
-                this.mealPreferences = user.mealPreferences;
-            }).catch(error => {
-                console.error('Error fetching user profile:', error);
-            });
-        },
-        updateProfile() {
+        async updateProfile() {
             const userDetails = {
                 firstName: this.firstName,
                 lastName: this.lastName,
                 email: this.email,
-                mealPreference: this.mealPreferences
+                mealPreferences: this.mealPreferences
             };
-            updateUserProfile(this.userId, userDetails).then(() => {
+            try {
+                await updateUserProfile(this.userId, userDetails);
                 alert('Profile updated successfully!');
-            }).catch(error => {
+            } catch (error) {
                 console.error('Error updating profile:', error);
-            });
+            }
         }
     }
 };

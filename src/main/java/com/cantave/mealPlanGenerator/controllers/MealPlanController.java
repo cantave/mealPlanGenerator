@@ -13,7 +13,7 @@ public class MealPlanController {
     @Autowired
     private MealPlanService mealPlanService;
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public List<MealPlan> getAllMealPlans(@PathVariable Long userId) {
         return mealPlanService.getAllMealPlans(userId);
     }

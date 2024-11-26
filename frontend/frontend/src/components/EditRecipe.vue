@@ -21,30 +21,32 @@ export default {
             instructions: ''
         };
     },
-    created() {
+    async created() {
         const id = this.$route.params.id;
-        getRecipeById(id).then(response => {
-            const recipe = response.data;
+        try {
+            const response = await getRecipeById(id);
+            const recipe = response;
             this.name = recipe.name;
             this.ingredients = recipe.ingredients.join(', ');
             this.instructions = recipe.instructions;
-        }).catch(error => {
+        } catch (error) {
             console.error('Error fetching recipe:', error);
-        });
+        }
     },
     methods: {
-        editRecipe() {
+        async editRecipe() {
             const id = this.$route.params.id;
             const updatedRecipe = {
                 name: this.name,
                 ingredients: this.ingredients.split(',').map(ingredient => ingredient.trim()),
                 instructions: this.instructions
             };
-            updateRecipe(id, updatedRecipe).then(() => {
+            try {
+                await updateRecipe(id, updatedRecipe);
                 this.$router.push(`/recipes/${id}`);
-            }).catch(error => {
+            } catch (error) {
                 console.error('Error updating recipe:', error);
-            });
+            }
         }
     }
 };

@@ -25,7 +25,7 @@
     },
     methods: {
       ...mapActions(['logout']),
-      logout() {
+      handleLogout() {
         this.logout();
         this.$router.push('/login');
       }

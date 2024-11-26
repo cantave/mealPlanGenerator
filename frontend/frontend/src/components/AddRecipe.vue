@@ -20,17 +20,18 @@ export default {
         };
     },
     methods: {
-        submitRecipe() {
+        async submitRecipe() {
             const recipe = {
                 name: this.name,
                 ingredients: this.ingredients.split(',').map(ingredient => ingredient.trim()),
                 instructions: this.instructions
             };
-            addRecipe(recipe).then(() => {
+            try {
+                await addRecipe(recipe);
                 this.$router.push('/recipes');
-            }).catch(error => {
+            } catch (error) {
                 console.error('Error adding recipe:', error);
-            });
+            }
         }
     }
 };

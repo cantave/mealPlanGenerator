@@ -18,12 +18,13 @@ import { getRecipes } from '@/services/apiService';
                 recipes: []
             };
         },
-        created() {
-            getRecipes().then(response => {
-                this.recipes = response.data;
-            }).catch(error => {
-                console.error('Error fetching recipes: ', error);
-            });
+        async created() {
+            try{
+                const response =await getRecipes();
+                this.recipes = response;
+            } catch (error) {
+                console.error('Error fetching recipes:', error);
+            }
         }
     };
 </script>

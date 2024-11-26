@@ -40,7 +40,6 @@ export default {
     },
     data() {
         return {
-            userId: '',
             date: '',
             selectedRecipes: [],
             mealPreferences: '',
@@ -48,30 +47,29 @@ export default {
             generatedMealPlan: null
         };
     },
-    created() {
-        this.fetchRecipes();
+    async created() {
+        try {
+            const response = await getRecipes();
+            this.recipes = response;
+        } catch (error) {
+            console.error('Error fetching recipes:', error);
+        }
     },
     methods: {
-        fetchRecipes() {
-            getRecipes().then(response => {
-                this.recipes = response.data;
-            }).catch(error => {
-                console.error('Error fetching recipes:', error);
-            });
-        },
-        generatePlan() {
+        async generatePlan() {
             const mealPlan = {
                 userId: this.userId,
                 date: this.date,
-                recipes: this.selectedRecipes,
+                recipes: this.recipes,
                 mealPreferences: this.mealPreferences.split(',').map(pref => pref.trim())
             };
-            generateMealPlan(mealPlan).then(response => {
-                this.generatedMealPlan = response.data;
+            try {
+                const response = await generateMealPlan(mealPlan);
+                this.generatedMealPlan = response;
                 this.$router.push(`/meal-plan/${this.userId}`);
-            }).catch(error => {
+            } catch (error) {
                 console.error('Error generating meal plan:', error);
-            });
+            }
         }
     }
 };
