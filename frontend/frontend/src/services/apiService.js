@@ -2,34 +2,49 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8081/api";
 
+const getToken = () => localStorage.getItem('user-token');
+
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+  headers: {
+    Authorization: `Bearer ${getToken()}`,
+    'Content-Type': 'application/json'
+  }
+});
+
+export const updateToken = () => {
+  const token = getToken();
+  axiosInstance.defaults.headers.Authorization = token ? `Bearer ${token}` : '';
+};
+
 export const addRecipe = (recipe) => {
-  return axios.post(`${API_URL}/recipes`, recipe);
+  return axiosInstance.post('/recipes', recipe);
 };
 
 export const getRecipes = () => {
-  return axios.get(`${API_URL}/recipes`);
+  return axiosInstance.get('/recipes');
 };
 
 export const generateMealPlan = (mealPlan) => {
-  return axios.post(`${API_URL}/mealplans`, mealPlan);
+  return axiosInstance.post('/meal-plan', mealPlan);
 };
 
 export const getMealPlans = (userId) => {
-  return axios.post(`${API_URL}/mealplans/${userId}`);
+  return axiosInstance.get(`/mealplans/${userId}`);
 };
 
 export const getRecipeById = (id) => {
-  return axios.get(`${API_URL}/recipes/${id}`);
+  return axiosInstance.get(`/recipes/${id}`);
 };
 
 export const updateRecipe = (id, recipe) => {
-  return axios.get(`${API_URL}/recipes/${id}`, recipe);
+  return axiosInstance.put(`/recipes/${id}`, recipe);
 };
 
 export const getUserProfile = (id) => {
-  return axios.get(`${API_URL}/user/${id}`);
+  return axiosInstance.get(`/user/${id}`);
 };
 
 export const updateUserProfile = (id, userDetails) => {
-  return axios.get(`${API_URL}/user/${id}`, userDetails);
+  return axiosInstance.put(`/user/${id}`, userDetails);
 };

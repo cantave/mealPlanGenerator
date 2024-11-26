@@ -25,8 +25,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { getUserProfile, updateUserProfile } from '@/services/apiService';
 export default {
+    computed: {
+        ...mapGetters(['userId'])
+    },
     data() {
         return {
             firstName: '',
@@ -40,8 +44,7 @@ export default {
     },
     methods: {
         fetchUserProfile() {
-            const userId = this.$route.params.id;
-            getUserProfile(userId).then(response => {
+            getUserProfile(this.userId).then(response => {
                 const user = response.data;
                 this.firstName = user.firstName;
                 this.lastName = user.lastName;
@@ -52,14 +55,13 @@ export default {
             });
         },
         updateProfile() {
-            const userId = this.$route.params.id;
             const userDetails = {
                 firstName: this.firstName,
                 lastName: this.lastName,
                 email: this.email,
                 mealPreference: this.mealPreferences
             };
-            updateUserProfile(userId, userDetails).then(() => {
+            updateUserProfile(this.userId, userDetails).then(() => {
                 alert('Profile updated successfully!');
             }).catch(error => {
                 console.error('Error updating profile:', error);

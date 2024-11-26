@@ -31,9 +31,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { getRecipes, generateMealPlan } from '@/services/apiService';
 
 export default {
+    computed: {
+        ...mapGetters(['userId'])
+    },
     data() {
         return {
             userId: '',
