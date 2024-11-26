@@ -11,8 +11,7 @@ export default {
     name: 'MealPlanView',
     components: {
         MealPlan
-    }
+    },
+    props: ['userId']
 };
 </script>
-
-<style lang="scss" scoped></style>
