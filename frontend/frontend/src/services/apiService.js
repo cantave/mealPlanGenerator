@@ -25,3 +25,11 @@ export const getRecipeById = (id) => {
 export const updateRecipe = (id, recipe) => {
   return axios.get(`${API_URL}/recipes/${id}`, recipe);
 };
+
+export const getUserProfile = (id) => {
+  return axios.get(`${API_URL}/user/${id}`);
+};
+
+export const updateUserProfile = (id, userDetails) => {
+  return axios.get(`${API_URL}/user/${id}`, userDetails);
+};
