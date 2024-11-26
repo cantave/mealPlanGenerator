@@ -10,7 +10,18 @@ public class MealPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long userId;
+
+    @ElementCollection
+    private List<String> breakfast;
+
+    @ElementCollection
+    private List<String> lunch;
+
+    @ElementCollection
+    private List<String> dinner;
+
     private String date;
 
     @ManyToMany
@@ -35,6 +46,30 @@ public class MealPlan {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public List<String> getBreakfast() {
+        return breakfast;
+    }
+
+    public void setBreakfast(List<String> breakfast) {
+        this.breakfast = breakfast;
+    }
+
+    public List<String> getLunch() {
+        return lunch;
+    }
+
+    public void setLunch(List<String> lunch) {
+        this.lunch = lunch;
+    }
+
+    public List<String> getDinner() {
+        return dinner;
+    }
+
+    public void setDinner(List<String> dinner) {
+        this.dinner = dinner;
     }
 
     public String getDate() {
