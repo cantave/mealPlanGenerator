@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Meal Plan for User {{ mealPlan.userId }}</h2>
+        <h2 v-if="mealPlan">Meal Plan for User {{ mealPlan.userId }}</h2>
         <div v-if="mealPlan">
             <h3>Breakfast</h3>
             <ul>
@@ -14,6 +14,9 @@
             <ul>
                 <li v-for="item in mealPlan.dinner" :key="item">{{ item }}</li>
             </ul>
+        </div>
+        <div v-else>
+            <p>Loading...</p>
         </div>
     </div>
 </template>
