@@ -16,7 +16,27 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
+    public Recipe getRecipeById(Long id){
+        return recipeRepository.findById(id).orElse(null);
+    }
+
     public List<Recipe> getAllRecipes(){
         return recipeRepository.findAll();
+    }
+
+    public Recipe updateRecipe(Long id, Recipe recipeDetails){
+        Recipe recipe = recipeRepository.findById(id).orElse(null);
+        if(recipe != null) {
+            recipe.setName(recipeDetails.getName());
+            recipe.setIngredients(recipeDetails.getIngredients());
+            recipe.setDescription((recipe.getDescription()));
+            recipe.setInstructions(recipe.getInstructions());
+            return recipeRepository.save(recipe);
+        }
+        return null;
+    }
+
+    public void deleteRecipe(Long id){
+        recipeRepository.deleteById(id);
     }
 }

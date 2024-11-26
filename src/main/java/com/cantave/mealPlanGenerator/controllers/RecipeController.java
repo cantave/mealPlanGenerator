@@ -1,7 +1,6 @@
 package com.cantave.mealPlanGenerator.controllers;
 
 import com.cantave.mealPlanGenerator.models.Recipe;
-import com.cantave.mealPlanGenerator.repositories.RecipeRepository;
 import com.cantave.mealPlanGenerator.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,5 +22,20 @@ public class RecipeController {
     @GetMapping
     public List<Recipe> getAllRecipes(){
         return recipeService.getAllRecipes();
+    }
+
+    @GetMapping("/{id}")
+    public Recipe getRecipeById(@PathVariable Long id){
+        return recipeService.getRecipeById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Recipe updateRecipe(@PathVariable Long id, @RequestBody Recipe recipeDetails){
+        return recipeService.updateRecipe(id, recipeDetails);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteRecipe(@PathVariable Long id){
+        recipeService.deleteRecipe(id);
     }
 }
