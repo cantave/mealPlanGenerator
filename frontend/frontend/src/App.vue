@@ -44,4 +44,24 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+
+#app a,
+#app button {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  text-decoration: none;
+  color: #333;
+}
+
+#app a:hover,
+#app button:hover {
+  background-color: #e0e0e0;
+}
 </style>
