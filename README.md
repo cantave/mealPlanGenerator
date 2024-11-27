@@ -67,10 +67,22 @@ MealPlanGenerator is a fullstack application designed to help users create and m
 ### Recipes
 - **POST /api/recipes** - Add a new recipe
 - **GET /api/recipes** - Fetch all recipes
+- **GET /api/recipes/{id}** - Fetch a recipe by its ID
+- **PUT /api/recipes/{id}** - Update a recipe by its ID
+- **DELETE /api/recipes/{id}** - Delete a recipe by its ID
+- **GET /api/recipes/fetch-and-save** - Fetch recipes from TheMealDB API and save to the database
 
 ### Meal Plans
 - **POST /api/mealplans** - Generate a meal plan
 - **GET /api/mealplans/{userId}** - Fetch a user’s meal plans
+
+### User Authentication
+- **POST /api/auth/register** - Register a new user
+- **POST /api/auth/login** - Log in a user
+
+### User Profiles
+- **GET /api/userprofiles/{userId}** - Fetch user profile by user ID
+- **PUT /api/userprofiles/{userId}** - Update user profile by user ID
 
 ## Contributing
 
