@@ -106,8 +106,14 @@ MealPlanGenerator is a fullstack application designed to help users create and m
 - **Debugging**:
   - Identify and fix any bugs found during testing.
   - Ensure the application functions as expected across different browsers and devices.
+ 
+### Phase 10: Deployment
+- **Backend Deployment**:
+   - Deploy the backend on Heroku or Render.
+- **Frontend Deployment**:
+   - Deploy the frontend on Netlify.
 
-### Phase 10: UI/UX Enhancements
+### Phase 11: UI/UX Enhancements
 - **Improve UI/UX Design**:
   - Enhance the user interface for a more intuitive and visually appealing experience.
   - Improve accessibility to ensure the application is usable by everyone.
