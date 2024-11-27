@@ -1,6 +1,6 @@
 # MealPlanGenerator
 
-A fullstack meal plan generator application using Java, Spring Boot, PostgreSQL, and Vue.js.
+A fullstack meal plan generator application using Java, Spring Boot, PostgreSQL, and Vue.js. This application allows users to create personalized meal plans based on their dietary preferences and caloric needs. Users can manage recipes through adding, updating, and deleting options, and generate meal plans according to specific nutritional constraints. The app features user authentication with JWT for secure access, and includes functionalities for managing user profiles.
 
 ## Table of Contents
 
@@ -83,6 +83,38 @@ MealPlanGenerator is a fullstack application designed to help users create and m
 ### User Profiles
 - **GET /api/userprofiles/{userId}** - Fetch user profile by user ID
 - **PUT /api/userprofiles/{userId}** - Update user profile by user ID
+
+## Next Steps
+
+### Phase 8: Integration with TheMealDB API
+- **Fetch and Save Recipes**:
+  - Extend `RecipeService` to fetch recipes from TheMealDB API.
+  - Add methods in `RecipeService` to save fetched recipes to the PostgreSQL database.
+  - Create a new endpoint in `RecipeController` to trigger the fetch and save operations.
+  - Use Axios in Vue components to call the new endpoint and load recipes from TheMealDB API.
+
+### Phase 9: Debugging and Testing
+- **Unit Testing**:
+  - Write unit tests for all backend services and controllers.
+  - Implement unit tests for frontend components.
+- **Integration Testing**:
+  - Write integration tests for backend and frontend interactions.
+  - Ensure that all API endpoints work correctly with the frontend.
+- **End-to-End Testing**:
+  - Implement end-to-end tests to verify the entire workflow of the application.
+  - Use tools like Selenium or Cypress for automated testing.
+- **Debugging**:
+  - Identify and fix any bugs found during testing.
+  - Ensure the application functions as expected across different browsers and devices.
+
+### Phase 10: UI/UX Enhancements
+- **Improve UI/UX Design**:
+  - Enhance the user interface for a more intuitive and visually appealing experience.
+  - Improve accessibility to ensure the application is usable by everyone.
+- **User Feedback**:
+  - Collect and incorporate user feedback to continuously improve the application.
+
+These phases outline the next steps for your project, focusing on integrating TheMealDB API, debugging and testing, and enhancing the UI/UX design.
 
 ## Contributing
 
