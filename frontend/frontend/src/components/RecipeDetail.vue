@@ -1,35 +1,32 @@
 <template>
     <div>
-        <h2>{{ recipe.name }}</h2>
-        <div>
+        <h2 v-if="recipe.name">{{ recipe.name }}</h2>
+        <div v-if="recipe.name">
+            <p>{{ recipe.description }}</p>
             <h3>Ingredients</h3>
             <ul>
-                <li v-for="ingredient in recipe.ingredients" :key="ingredient"> {{ ingredient }}</li>
+                <li v-for="ingredient in recipe.ingredients" :key="ingredient">{{ ingredient }}</li>
             </ul>
             <h3>Instructions</h3>
             <p>{{ recipe.instructions }}</p>
-            <router-link :to="{ name: 'EditRecipeView', params: { id: recipe.id } }">Edit</router-link>
+            <router-link v-if="recipe.id" :to="{ name: 'EditRecipeView', params: { id: recipe.id } }">Edit</router-link>
         </div>
     </div>
 </template>
 
 <script>
-import { getRecipeById } from '@services/apiService';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-    data() {
-        return {
-            recipe: {}
-        };
+    computed: {
+        ...mapGetters(['recipe'])
     },
-    async created() {
+    methods: {
+        ...mapActions(['fetchRecipeById'])
+    },
+    created() {
         const id = this.$route.params.id;
-        try {
-            const response = await getRecipeById(id);
-            this.recipe = response;
-        } catch (error) {
-            console.error('Error fetching recipe:', error);
-        }
+        this.fetchRecipeById(id);
     }
 };
 </script>

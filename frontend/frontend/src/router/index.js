@@ -11,18 +11,41 @@ import MealPlanView from "@/views/MealPlanView.vue";
 import UserProfileView from "@/views/UserProfileView.vue";
 
 const routes = [
-  { path: "/", name: "HomeView", component: HomeView },
-  { path: "/login", name: "LoginView", component: LoginView },
-  { path: "/register", name: "RegisterView", component: RegisterView },
-  { path: "/add-recipe", name: "AddRecipeView", component: AddRecipeView },
-  { path: "/recipes", name: "RecipeListView", component: RecipeListView },
+  {
+    path: "/",
+    name: "HomeView",
+    component: HomeView,
+  },
+
+  {
+    path: "/login",
+    name: "LoginView",
+    component: LoginView,
+  },
+
+  {
+    path: "/register",
+    name: "RegisterView",
+    component: RegisterView,
+  },
+
+  {
+    path: "/add-recipe",
+    name: "AddRecipeView",
+    component: AddRecipeView,
+  },
+  {
+    path: "/recipes",
+    name: "RecipeListView",
+    component: RecipeListView,
+  },
   {
     path: "/recipes/:id",
     name: "RecipeDetailView",
     component: RecipeDetailView,
   },
   {
-    path: "/recipes/:id/edit",
+    path: "/recipes/edit/:id",
     name: "EditRecipeView",
     component: EditRecipeView,
   },
