@@ -15,27 +15,27 @@ public class RecipeController {
     private RecipeService recipeService;
 
     @PostMapping
-    public Recipe addRecipe(@RequestBody Recipe recipe){
+    public Recipe addRecipe(@RequestBody Recipe recipe) {
         return recipeService.addRecipe(recipe);
     }
 
     @GetMapping
-    public List<Recipe> getAllRecipes(){
+    public List<Recipe> getAllRecipes() {
         return recipeService.getAllRecipes();
     }
 
     @GetMapping("/{id}")
-    public Recipe getRecipeById(@PathVariable Long id){
+    public Recipe getRecipeById(@PathVariable Long id) {
         return recipeService.getRecipeById(id);
     }
 
     @PutMapping("/{id}")
-    public Recipe updateRecipe(@PathVariable Long id, @RequestBody Recipe recipeDetails){
+    public Recipe updateRecipe(@PathVariable Long id, @RequestBody Recipe recipeDetails) {
         return recipeService.updateRecipe(id, recipeDetails);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRecipe(@PathVariable Long id){
+    public void deleteRecipe(@PathVariable Long id) {
         recipeService.deleteRecipe(id);
     }
 }
