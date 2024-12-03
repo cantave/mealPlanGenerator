@@ -11,16 +11,25 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
     name: 'MealPlanView',
     components: {
-        MealPlan
+        MealPlan,
     },
     computed: {
-        ...mapGetters(['userId'])
+        ...mapGetters(['userId']),
+    },
+    watch: {
+        userId(newUserId) {
+            if (newUserId) {
+                this.fetchUserMealPlans(newUserId);
+            }
+        },
     },
     created() {
-        this.fetchUserMealPlan(this.userId);
+        if (this.userId) {
+            this.fetchUserMealPlans(this.userId);
+        }
     },
     methods: {
-        ...mapActions(['fetchUserMealPlan'])
-    }
+        ...mapActions(['fetchUserMealPlans']),
+    },
 };
 </script>

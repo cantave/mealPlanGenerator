@@ -5,6 +5,7 @@ import {
   updateRecipe,
   getUserProfile,
   getMealPlans,
+  deleteMealPlan,
 } from "@/services/apiService";
 import { EventBus } from "@/eventBus";
 
@@ -18,7 +19,7 @@ const store = createStore({
       firstName: "",
       lastName: "",
     },
-    mealPlan: null,
+    mealPlans: [],
   },
   mutations: {
     setUserId(state, userId) {
@@ -38,8 +39,13 @@ const store = createStore({
     setUserProfile(state, profile) {
       state.userProfile = profile;
     },
-    setMealPlan(state, mealPlan) {
-      state.mealPlan = mealPlan;
+    setMealPlans(state, mealPlans) {
+      state.mealPlans = mealPlans;
+    },
+    removeMealPlan(state, mealPlanId) {
+      state.mealPlans = state.mealPlans.filter(
+        (plan) => plan.id !== mealPlanId
+      );
     },
   },
   actions: {
@@ -48,7 +54,7 @@ const store = createStore({
         const recipes = await getRecipes();
         commit("setRecipes", recipes);
       } catch (error) {
-        console.error("Error fetching recipes:", error);
+        console.error("Error fetching recipes:", error.message);
       }
     },
     async fetchRecipeById({ commit }, id) {
@@ -56,7 +62,7 @@ const store = createStore({
         const recipe = await getRecipeById(id);
         commit("setRecipe", recipe);
       } catch (error) {
-        console.error("Error fetching recipe:", error);
+        console.error("Error fetching recipe:", error.message);
       }
     },
     async updateRecipeById({ commit, state }, { id, updatedRecipe }) {
@@ -68,23 +74,31 @@ const store = createStore({
         commit("setRecipes", updatedRecipes);
         commit("setRecipe", updatedRecipe);
       } catch (error) {
-        console.error("Error updating recipe:", error);
+        console.error("Error updating recipe:", error.message);
       }
     },
-    async fetchUserProfile({ commit, state }) {
+    async fetchUserProfile({ commit }) {
       try {
-        const profile = await getUserProfile(state.userId);
+        const profile = await getUserProfile(this.state.userId);
         commit("setUserProfile", profile);
       } catch (error) {
-        console.error("Error fetching user profile:", error);
+        console.error("Error fetching user profile:", error.message);
       }
     },
-    async fetchUserMealPlan({ commit }, userId) {
+    async fetchUserMealPlans({ commit }, userId) {
       try {
-        const mealPlan = await getMealPlans(userId);
-        commit("setMealPlan", mealPlan);
+        const mealPlans = await getMealPlans(userId);
+        commit("setMealPlans", mealPlans);
       } catch (error) {
-        console.error("Error fetching meal plan:", error);
+        console.error("Error fetching meal plans:", error.message);
+      }
+    },
+    async deleteMealPlan({ commit }, mealPlanId) {
+      try {
+        await deleteMealPlan(mealPlanId);
+        commit("removeMealPlan", mealPlanId);
+      } catch (error) {
+        console.error("Error deleting meal plan:", error.message);
       }
     },
     logout({ commit }) {
@@ -103,7 +117,7 @@ const store = createStore({
     userImage: (state) => state.userProfile.userImage,
     userName: (state) =>
       `${state.userProfile.firstName} ${state.userProfile.lastName}`,
-    mealPlan: (state) => state.mealPlan,
+    mealPlans: (state) => state.mealPlans,
   },
 });
 

@@ -1,6 +1,9 @@
 package com.cantave.mealPlanGenerator.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -23,6 +26,24 @@ public class Recipe {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String instructions;
+
+    public Recipe() {
+    }
+
+    @JsonCreator
+    public Recipe(
+            @JsonProperty("id") Long id,
+            @JsonProperty("name") String name,
+            @JsonProperty("description") String description,
+            @JsonProperty("ingredients") List<String> ingredients,
+            @JsonProperty("instructions") String instructions
+    ) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.ingredients = ingredients;
+        this.instructions = instructions;
+    }
 
     public Long getId() {
         return id;

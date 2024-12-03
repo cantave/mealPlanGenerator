@@ -13,7 +13,7 @@
             <label>
                 <span>Breakfast:</span>
                 <textarea v-model="mealPlan.breakfast" type="text"
-                    placeholder="Enter breakfast items, separated by commas"/>
+                    placeholder="Enter breakfast items, separated by commas" />
             </label>
             <label>
                 <span>Lunch:</span>
@@ -66,7 +66,7 @@ export default {
                 breakfast: '',
                 lunch: '',
                 dinner: '',
-                recipes: []
+                recipes: [],
             },
             mealPreferences: '',
             recipes: [],
@@ -96,7 +96,11 @@ export default {
         async generatePlan() {
             const mealPlan = {
                 ...this.mealPlan,
-                mealPreferences: this.mealPreferences.split(',').map(pref => pref.trim())
+                breakfast: this.mealPlan.breakfast ? this.mealPlan.breakfast.split(',').map((item) => item.trim()) : [],
+                lunch: this.mealPlan.lunch ? this.mealPlan.lunch.split(',').map((item) => item.trim()) : [],
+                dinner: this.mealPlan.dinner ? this.mealPlan.dinner.split(',').map((item) => item.trim()) : [],
+                mealPreferences: this.mealPreferences ? this.mealPreferences.split(',').map((pref) => pref.trim()) : [],
+                recipes: this.mealPlan.recipes.map(id => this.recipes.find(recipe => recipe.id === id))
             };
             try {
                 const response = await generateMealPlan(mealPlan);

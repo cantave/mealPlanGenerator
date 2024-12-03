@@ -2,7 +2,7 @@
   <nav>
     <router-link class="nav-link" :to="{ name: 'HomeView' }">Home</router-link>
     <router-link v-if="isAuthenticated" class="nav-link" :to="{ name: 'AddRecipeView' }">Add Recipe</router-link>
-    <router-link class="nav-link" :to="{ name: 'RecipeListView' }">Recipes</router-link>
+    <router-link v-if="isAuthenticated" class="nav-link" :to="{ name: 'RecipeListView' }">Recipes</router-link>
     <router-link v-if="isAuthenticated" class="nav-link" :to="{ name: 'MealPlanFormView' }">Generate Meal
       Plan</router-link>
     <router-link v-if="isAuthenticated && userId" class="nav-link"
