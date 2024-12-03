@@ -1,11 +1,24 @@
 import { createStore } from "vuex";
-import { getRecipes, getRecipeById, updateRecipe } from "@/services/apiService";
+import {
+  getRecipes,
+  getRecipeById,
+  updateRecipe,
+  getUserProfile,
+  getMealPlans,
+} from "@/services/apiService";
+import { EventBus } from "@/eventBus";
 
 const store = createStore({
   state: {
     userId: localStorage.getItem("user-id") || null,
     recipes: [],
     recipe: {},
+    userProfile: {
+      userImage: null,
+      firstName: "",
+      lastName: "",
+    },
+    mealPlan: null,
   },
   mutations: {
     setUserId(state, userId) {
@@ -21,6 +34,12 @@ const store = createStore({
     },
     setRecipe(state, recipe) {
       state.recipe = recipe;
+    },
+    setUserProfile(state, profile) {
+      state.userProfile = profile;
+    },
+    setMealPlan(state, mealPlan) {
+      state.mealPlan = mealPlan;
     },
   },
   actions: {
@@ -52,11 +71,39 @@ const store = createStore({
         console.error("Error updating recipe:", error);
       }
     },
+    async fetchUserProfile({ commit, state }) {
+      try {
+        const profile = await getUserProfile(state.userId);
+        commit("setUserProfile", profile);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    },
+    async fetchUserMealPlan({ commit }, userId) {
+      try {
+        const mealPlan = await getMealPlans(userId);
+        commit("setMealPlan", mealPlan);
+      } catch (error) {
+        console.error("Error fetching meal plan:", error);
+      }
+    },
+    logout({ commit }) {
+      commit("clearUserId");
+      localStorage.removeItem("user-token");
+      localStorage.removeItem("user-id");
+      EventBus.emit("user-logged-out");
+    },
   },
   getters: {
     userId: (state) => state.userId,
+    isAuthenticated: (state) => !!state.userId,
     recipes: (state) => state.recipes,
     recipe: (state) => state.recipe,
+    userProfile: (state) => state.userProfile,
+    userImage: (state) => state.userProfile.userImage,
+    userName: (state) =>
+      `${state.userProfile.firstName} ${state.userProfile.lastName}`,
+    mealPlan: (state) => state.mealPlan,
   },
 });
 

@@ -44,6 +44,7 @@ export const generateMealPlan = async (mealPlan) => {
     return response.data;
   } catch (error) {
     console.error("Error generating meal plan:", error);
+    throw error;
   }
 };
 

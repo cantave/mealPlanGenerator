@@ -1,16 +1,23 @@
 <template>
     <div>
-        <UserProfileForm />
+        <UserProfile />
     </div>
 </template>
 
 <script>
-import UserProfileForm from '@/components/UserProfileForm.vue';
+import UserProfile from '@/components/UserProfile.vue';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'UserProfileView',
     components: {
-        UserProfileForm
+        UserProfile
+    },
+    created() {
+        this.fetchUserProfile();
+    },
+    methods: {
+        ...mapActions(['fetchUserProfile'])
     }
 };
 </script>

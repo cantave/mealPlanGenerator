@@ -16,21 +16,30 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { EventBus } from '@/eventBus';
 
 export default {
   name: 'NavBar',
   computed: {
-    ...mapGetters(['userId']),
-    isAuthenticated() {
-      return !!this.userId;
-    }
+    ...mapGetters(['isAuthenticated', 'userId']),
+  },
+  mounted() {
+    EventBus.on('user-logged-in', this.updateUserStatus);
+    EventBus.on('user-logged-out', this.updateUserStatus);
   },
   methods: {
     ...mapActions(['logout']),
     handleLogout() {
       this.logout();
-      this.$router.push('/login');
+      this.$router.push('/');
+    },
+    updateUserStatus() {
+      this.$forceUpdate();
     }
+  },
+  beforeUnmount() {
+    EventBus.off('user-logged-in', this.updateUserStatus);
+    EventBus.off('user-logged-out', this.updateUserStatus);
   }
 };
 </script>

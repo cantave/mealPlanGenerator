@@ -23,25 +23,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { getMealPlans } from '@/services/apiService';
 
 export default {
     computed: {
-        ...mapGetters(['userId'])
+        ...mapGetters(['mealPlan', 'userId'])
     },
-    data() {
-        return {
-            mealPlan: null
-        };
+    created() {
+        this.$store.dispatch('fetchUserMealPlan', this.userId);
     },
-    async created() {
-        try {
-            const response = await getMealPlans(this.userId);
-            this.mealPlan = response;
-        } catch (error) {
-            console.error('Error fetching meal plan:', error);
-        }
-    }
 };
 </script>
 

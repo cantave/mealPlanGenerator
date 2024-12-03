@@ -13,7 +13,7 @@
             <label>
                 <span>Select Recipes:</span>
                 <select v-model="selectedRecipes" multiple>
-                    <option v-for="recipe in recipes" :value="recipe.id" :key="recipe.id">{{ recipe.name }}</option>
+                    <option v-for="recipe in recipes" :value="recipe" :key="recipe.id">{{ recipe.name }}</option>
                 </select>
             </label>
             <label>
@@ -25,7 +25,7 @@
         </form>
         <div v-if="generatedMealPlan">
             <p>Meal plan generated successfully!</p>
-            <router-link :to="{ name: 'MealPlan', params: { userId: userId } }">View Meal Plan</router-link>
+            <router-link :to="{ name: 'MealPlanView', params: { userId: userId } }">View Meal Plan</router-link>
         </div>
     </div>
 </template>
@@ -60,13 +60,13 @@ export default {
             const mealPlan = {
                 userId: this.userId,
                 date: this.date,
-                recipes: this.recipes,
+                recipes: this.selectedRecipes,
                 mealPreferences: this.mealPreferences.split(',').map(pref => pref.trim())
             };
             try {
                 const response = await generateMealPlan(mealPlan);
                 this.generatedMealPlan = response;
-                this.$router.push(`/meal-plan/${this.userId}`);
+                this.$router.push({ name: 'MealPlanView', params: { userId: this.userId } });
             } catch (error) {
                 console.error('Error generating meal plan:', error);
             }
