@@ -1,19 +1,32 @@
 <template>
     <div>
         <h2>Generate Meal Plan</h2>
-        <form @submit.prevent="generatePlan">
+        <form @submit.prevent="validateAndSubmit">
             <label>
                 <span>User ID:</span>
-                <input v-model="userId" type="number" placeholder="Enter your user ID" required />
+                <input v-model="mealPlan.userId" type="number" placeholder="Enter your user ID" required />
             </label>
             <label>
                 <span>Date:</span>
-                <input v-model="date" type="date" required />
+                <input v-model="mealPlan.date" type="date" required />
+            </label>
+            <label>
+                <span>Breakfast:</span>
+                <textarea v-model="mealPlan.breakfast" type="text"
+                    placeholder="Enter breakfast items, separated by commas"/>
+            </label>
+            <label>
+                <span>Lunch:</span>
+                <textarea v-model="mealPlan.lunch" type="text" placeholder="Enter lunch items, separated by commas" />
+            </label>
+            <label>
+                <span>Dinner:</span>
+                <textarea v-model="mealPlan.dinner" type="text" placeholder="Enter dinner items, separated by commas" />
             </label>
             <label>
                 <span>Select Recipes:</span>
-                <select v-model="selectedRecipes" multiple>
-                    <option v-for="recipe in recipes" :value="recipe" :key="recipe.id">{{ recipe.name }}</option>
+                <select v-model="mealPlan.recipes" multiple>
+                    <option v-for="recipe in recipes" :value="recipe.id" :key="recipe.id">{{ recipe.name }}</option>
                 </select>
             </label>
             <label>
@@ -22,10 +35,17 @@
                     placeholder="Enter meal preferences (e.g., vegetarian, gluten-free)"></textarea>
             </label>
             <button type="submit">Generate Meal Plan</button>
+            <div v-if="formErrors.length">
+                <p><b>Please correct the following error(s):</b></p>
+                <ul>
+                    <li v-for="error in formErrors" :key="error">{{ error }}</li>
+                </ul>
+            </div>
         </form>
         <div v-if="generatedMealPlan">
             <p>Meal plan generated successfully!</p>
-            <router-link :to="{ name: 'MealPlanView', params: { userId: userId } }">View Meal Plan</router-link>
+            <router-link :to="{ name: 'MealPlanView', params: { userId: mealPlan.userId } }">View Meal
+                Plan</router-link>
         </div>
     </div>
 </template>
@@ -40,33 +60,48 @@ export default {
     },
     data() {
         return {
-            date: '',
-            selectedRecipes: [],
+            mealPlan: {
+                userId: '',
+                date: '',
+                breakfast: '',
+                lunch: '',
+                dinner: '',
+                recipes: []
+            },
             mealPreferences: '',
             recipes: [],
-            generatedMealPlan: null
+            generatedMealPlan: null,
+            formErrors: []
         };
     },
     async created() {
         try {
             const response = await getRecipes();
             this.recipes = response;
+            this.mealPlan.userId = this.userId;
         } catch (error) {
             console.error('Error fetching recipes:', error);
         }
     },
     methods: {
+        async validateAndSubmit() {
+            this.formErrors = [];
+            if (!this.mealPlan.userId) this.formErrors.push("User ID is required.");
+            if (!this.mealPlan.date) this.formErrors.push("Date is required.");
+            if (this.mealPlan.recipes.length === 0) this.formErrors.push("At lease one recipe must be selected.");
+            if (this.formErrors.length) return;
+
+            await this.generatePlan();
+        },
         async generatePlan() {
             const mealPlan = {
-                userId: this.userId,
-                date: this.date,
-                recipes: this.selectedRecipes,
+                ...this.mealPlan,
                 mealPreferences: this.mealPreferences.split(',').map(pref => pref.trim())
             };
             try {
                 const response = await generateMealPlan(mealPlan);
                 this.generatedMealPlan = response;
-                this.$router.push({ name: 'MealPlanView', params: { userId: this.userId } });
+                this.$router.push({ name: 'MealPlanView', params: { userId: this.mealPlan.userId } });
             } catch (error) {
                 console.error('Error generating meal plan:', error);
             }
