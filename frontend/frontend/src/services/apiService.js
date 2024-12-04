@@ -121,3 +121,11 @@ export const updateUserProfile = async (id, userDetails) => {
     console.error("Error updating user profile:", error);
   }
 };
+
+export const deleteUserProfile = async (id) => {
+  try {
+    await axiosInstance.delete(`/user/${id}`);
+  } catch (error) {
+    console.error("Error deleting user profile:", error.message);
+  }
+};

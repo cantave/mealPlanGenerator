@@ -21,4 +21,9 @@ public class UserProfileController {
     public User updateUserProfile(@PathVariable Long id, @RequestBody User userDetails){
         return userProfileService.updateUserProfile(id, userDetails);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteUserProfile(@PathVariable Long id){
+        userProfileService.deleteUserProfile(id);
+    }
 }

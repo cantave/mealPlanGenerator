@@ -6,6 +6,7 @@ import {
   getUserProfile,
   getMealPlans,
   deleteMealPlan,
+  deleteUserProfile,
 } from "@/services/apiService";
 import { EventBus } from "@/eventBus";
 
@@ -99,6 +100,15 @@ const store = createStore({
         commit("removeMealPlan", mealPlanId);
       } catch (error) {
         console.error("Error deleting meal plan:", error.message);
+      }
+    },
+    async deleteUserProfile({commit}, userId){
+      try {
+        await deleteUserProfile(userId);
+        commit("clearUserId");
+        EventBus.emit("user-logged-out");
+      } catch (error) {
+        console.error("Error deleting user profile:", error.message);
       }
     },
     logout({ commit }) {

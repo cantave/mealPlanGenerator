@@ -20,16 +20,17 @@
                     placeholder="Enter meal preferences (e.g., vegetarian, gluten-free)"></textarea>
             </label>
             <button type="submit">Update Profile</button>
+            <button type="button" @click="confirmDeleteProfile">Delete Profile</button>
         </form>
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { getUserProfile, updateUserProfile } from '@/services/apiService';
 export default {
     computed: {
-        ...mapGetters(['userId'])
+        ...mapGetters(['userId', 'userProfile'])
     },
     data() {
         return {
@@ -52,6 +53,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions(['deleteUserProfile']),
         async updateProfile() {
             const userDetails = {
                 firstName: this.firstName,
@@ -65,8 +67,15 @@ export default {
             } catch (error) {
                 console.error('Error updating profile:', error);
             }
-        }
-    }
+        },
+        confirmDeleteProfile() {
+            if (confirm('Are you sure you want to delete your profile?')) {
+                this.deleteUserProfile(this.userId);
+                alert('Profile deleted successfully!');
+                this.$router.push({ name: 'HomeView' });
+            }
+        },
+    },
 };
 </script>
 
