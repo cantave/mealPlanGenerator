@@ -59,4 +59,13 @@ public class UserProfileServiceTest {
         verify(userRepository, times(1)).findById(1L);
         verify(userRepository, times(1)).save(existingUser);
     }
+
+    @Test
+    public void testDeleteUserProfile() {
+        Long userId = 1L;
+
+        userProfileService.deleteUserProfile(userId);
+
+        verify(userRepository, times(1)).deleteById(userId);
+    }
 }

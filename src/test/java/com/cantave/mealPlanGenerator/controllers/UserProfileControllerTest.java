@@ -60,4 +60,16 @@ public class UserProfileControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("Jane"));
     }
+
+    @Test
+    public void testDeleteUserProfile() throws Exception {
+        Long userId = 1L;
+
+        doNothing().when(userProfileService).deleteUserProfile(userId);
+
+        mockMvc.perform(delete("/api/user/{id}", userId))
+                .andExpect(status().isOk());
+
+        verify(userProfileService, times(1)).deleteUserProfile(userId);
+    }
 }
