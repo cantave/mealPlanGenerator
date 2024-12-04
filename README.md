@@ -59,7 +59,7 @@ MealPlanGenerator is a fullstack application designed to help users create and m
 
 ### Usage
 
-- Access the application at http://localhost:8081 for the backend and http://localhost:8080 for the frontend (default Vue.jsport).
+- Access the application at http://localhost:8081 for the backend and http://localhost:8082 for the frontend (default Vue.jsport).
 - Use the application to add recipes, generate meal plans, and manage your dietary preferences.
 
 ## API Endpoints
@@ -80,9 +80,11 @@ MealPlanGenerator is a fullstack application designed to help users create and m
 - **POST /api/auth/register** - Register a new user
 - **POST /api/auth/login** - Log in a user
 
+
 ### User Profiles
-- **GET /api/userprofiles/{userId}** - Fetch user profile by user ID
-- **PUT /api/userprofiles/{userId}** - Update user profile by user ID
+- **GET /api/user/{userId}** - Fetch user profile by user ID
+- **PUT /api/user/{userId}** - Update user profile by user ID
+- **DELETE /api/user/{userId}** - Delete user profile by user ID
 
 ## Next Steps
 
