@@ -1,7 +1,7 @@
 <template>
     <div class="user-profile">
         <div class="profile-image">
-            <img :src="userImage || placeholderImage" alt="User Image" />
+            <img :src="userImage || placeholderImage" alt="img" />
         </div>
         <h2>
             {{ userName }}
