@@ -28,8 +28,13 @@ public class RecipeService {
         Recipe recipe = recipeRepository.findById(id).orElse(null);
         if(recipe != null) {
             recipe.setName(recipeDetails.getName());
-            recipe.setIngredients(recipeDetails.getIngredients());
             recipe.setDescription((recipe.getDescription()));
+            recipe.setCategory(recipeDetails.getCategory());
+            recipe.setArea(recipeDetails.getArea());
+            recipe.setMealThumb(recipeDetails.getMealThumb());
+            recipe.setYoutube(recipeDetails.getYoutube());
+            recipe.setIngredients(recipeDetails.getIngredients());
+            recipe.setMeasures(recipeDetails.getMeasures());
             recipe.setInstructions(recipe.getInstructions());
             return recipeRepository.save(recipe);
         }

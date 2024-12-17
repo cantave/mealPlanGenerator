@@ -10,7 +10,7 @@ import MealPlanFormView from "@/views/MealPlanFormView.vue";
 import MealPlanView from "@/views/MealPlanView.vue";
 import UserProfileView from "@/views/UserProfileView.vue";
 import UserProfileForm from "@/components/UserProfileForm.vue";
-
+import MealSearchView from "@/views/MealSearchView.vue";
 
 const routes = [
   {
@@ -69,9 +69,14 @@ const routes = [
   },
   {
     path: "/profile/edit",
-    name: 'UserProfileForm',
+    name: "UserProfileForm",
     component: UserProfileForm,
-  }
+  },
+  {
+    path: "/meal-search",
+    name: "MealSearchView",
+    component: MealSearchView,
+  },
 ];
 
 const router = createRouter({

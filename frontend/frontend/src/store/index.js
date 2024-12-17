@@ -7,20 +7,41 @@ import {
   getMealPlans,
   deleteMealPlan,
   deleteUserProfile,
+  addRecipe,
 } from "@/services/apiService";
 import { EventBus } from "@/eventBus";
+import {
+  getMealById,
+  getRandomMeal,
+  searchMealsByName,
+  filterByMainIngredient,
+  filterByCategory,
+  filterByArea,
+} from "@/services/mealDbService";
 
 const store = createStore({
   state: {
     userId: localStorage.getItem("user-id") || null,
     recipes: [],
-    recipe: {},
+    recipe: {
+      name: '',
+      description: '',
+      category: '',
+      area: '',
+      mealThumb: '',
+      youtube: '',
+      ingredients: [],
+      measures: [],
+      instructions: '',
+    },
     userProfile: {
       userImage: null,
       firstName: "",
       lastName: "",
     },
     mealPlans: [],
+    meals: [],
+    randomMeal: null,
   },
   mutations: {
     setUserId(state, userId) {
@@ -37,6 +58,9 @@ const store = createStore({
     setRecipe(state, recipe) {
       state.recipe = recipe;
     },
+    updateRecipeField(state, {field, value}){
+      state.recipe[field] = value;
+    },
     setUserProfile(state, profile) {
       state.userProfile = profile;
     },
@@ -48,8 +72,49 @@ const store = createStore({
         (plan) => plan.id !== mealPlanId
       );
     },
+    setMeals(state, meals) {
+      //console.log('Setting meals:', meals);
+      state.meals = meals;
+    },
+    setRandomMeal(state, meal) {
+      state.randomMeal = meal;
+    },
   },
   actions: {
+    async addRecipe({commit}, recipe) {
+      try {
+        const response = await addRecipe(recipe);
+        commit('setRecipe', response);
+        return response;
+      } catch (error) {
+        console.error('Error adding recipe:', error.message);
+      }
+    },
+    async fetchMealsByName({ commit }, mealName) {
+      try {
+        const meals = await searchMealsByName(mealName);
+        //console.log('Fetched meals:', meals);
+        commit("setMeals", meals);
+      } catch (error) {
+        console.error("Error fetching meals by name:", error.message);
+      }
+    },
+    async fetchMealById({ commit }, mealId) {
+      try {
+        const meal = await getMealById(mealId);
+        commit("setRecipe", meal);
+      } catch (error) {
+        console.error("Error fetching meal by ID:", error.message);
+      }
+    },
+    async fetchRandomMeal({ commit }) {
+      try {
+        const meal = await getRandomMeal();
+        commit("setMeals", [meal]);
+      } catch (error) {
+        console.error("Error fetching random meal:", error.message);
+      }
+    },
     async fetchRecipes({ commit }) {
       try {
         const recipes = await getRecipes();
@@ -102,7 +167,7 @@ const store = createStore({
         console.error("Error deleting meal plan:", error.message);
       }
     },
-    async deleteUserProfile({commit}, userId){
+    async deleteUserProfile({ commit }, userId) {
       try {
         await deleteUserProfile(userId);
         commit("clearUserId");
@@ -111,6 +176,34 @@ const store = createStore({
         console.error("Error deleting user profile:", error.message);
       }
     },
+
+    async filterMealsByIngredient({ commit }, ingredient) {
+      try {
+        const meals = await filterByMainIngredient(ingredient);
+        commit("setMeals", meals);
+      } catch (error) {
+        console.error("Error filtering meals by ingredient:", error.message);
+      }
+    },
+
+    async filterMealsByCategory({ commit }, category) {
+      try {
+        const meals = await filterByCategory(category);
+        commit("setMeals", meals);
+      } catch (error) {
+        console.error("Error filtering meals by category:", error.message);
+      }
+    },
+
+    async filterMealsByArea({ commit }, area) {
+      try {
+        const meals = await filterByArea(area);
+        commit("setMeals", meals);
+      } catch (error) {
+        console.error("Error filtering meals by area:", error.message);
+      }
+    },
+
     logout({ commit }) {
       commit("clearUserId");
       localStorage.removeItem("user-token");
@@ -128,6 +221,8 @@ const store = createStore({
     userName: (state) =>
       `${state.userProfile.firstName} ${state.userProfile.lastName}`,
     mealPlans: (state) => state.mealPlans,
+    meals: (state) => state.meals,
+    randomMeal: (state) => state.randomMeal,
   },
 });
 
