@@ -23,6 +23,8 @@ MealPlanGenerator is a fullstack application designed to help users create and m
 - Generate meal plans based on user preferences
 - View meal plans and recipes
 - Simple and intuitive user interface
+- **NEW**: Fetch and save recipes from TheMealDB API
+- **NEW**: Add meals to specific meal times (breakfast, lunch, dinner) in meal plans
 
 ## Technologies Used
 
@@ -70,7 +72,7 @@ MealPlanGenerator is a fullstack application designed to help users create and m
 - **GET /api/recipes/{id}** - Fetch a recipe by its ID
 - **PUT /api/recipes/{id}** - Update a recipe by its ID
 - **DELETE /api/recipes/{id}** - Delete a recipe by its ID
-- **GET /api/recipes/fetch-and-save** - Fetch recipes from TheMealDB API and save to the database
+- **Frontend Integration:** - Fetch recipes from TheMealDB API to display them in the application
 
 ### Meal Plans
 - **POST /api/mealplans** - Generate a meal plan
@@ -87,13 +89,6 @@ MealPlanGenerator is a fullstack application designed to help users create and m
 - **DELETE /api/user/{userId}** - Delete user profile by user ID
 
 ## Next Steps
-
-### Phase 8: Integration with TheMealDB API
-- **Fetch and Save Recipes**:
-  - Extend `RecipeService` to fetch recipes from TheMealDB API.
-  - Add methods in `RecipeService` to save fetched recipes to the PostgreSQL database.
-  - Create a new endpoint in `RecipeController` to trigger the fetch and save operations.
-  - Use Axios in Vue components to call the new endpoint and load recipes from TheMealDB API.
 
 ### Phase 9: Debugging and Testing
 - **Unit Testing**:
