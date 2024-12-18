@@ -16,13 +16,13 @@ export const updateAxiosToken = () => {
   axiosInstance.defaults.headers.Authorization = token ? `Bearer ${token}` : "";
 };
 
-export const updateToken = updateAxiosToken;
-
 updateAxiosToken();
+
+export const updateToken = updateAxiosToken;
 
 export const addRecipe = async (recipe) => {
   try {
-    const response = await axiosInstance.post("/recipes", recipe);
+    const response = await axiosInstance.post(`/recipes`, recipe);
     return response.data;
   } catch (error) {
     console.error("Error adding recipe:", error);
@@ -31,7 +31,7 @@ export const addRecipe = async (recipe) => {
 
 export const getRecipes = async () => {
   try {
-    const response = await axiosInstance.get("/recipes");
+    const response = await axiosInstance.get(`/recipes`);
     return response.data;
   } catch (error) {
     console.error("Error fetching recipes:", error);
@@ -40,7 +40,7 @@ export const getRecipes = async () => {
 
 export const generateMealPlan = async (mealPlan) => {
   try {
-    const response = await axiosInstance.post("/mealplans", mealPlan);
+    const response = await axiosInstance.post(`/mealplans`, mealPlan);
     return response.data;
   } catch (error) {
     console.error("Error generating meal plan:", error);
@@ -127,5 +127,26 @@ export const deleteUserProfile = async (id) => {
     await axiosInstance.delete(`/user/${id}`);
   } catch (error) {
     console.error("Error deleting user profile:", error.message);
+  }
+};
+
+export const addMealToMealPlan = async ({ meal, mealTime, mealPlanId }) => {
+  try {
+    const response = await axiosInstance.post(`/recipes/add-to-meal-plan`, {
+      name: meal.name,
+      description: meal.description,
+      category: meal.category,
+      area: meal.area,
+      mealThumb: meal.mealThumb,
+      youtube: meal.youtube,
+      ingredients: meal.ingredients,
+      measures: meal.measures,
+      instructions: meal.instructions,
+      mealTime,
+      mealPlanId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding meal to meal plan:", error.message);
   }
 };

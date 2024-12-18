@@ -6,7 +6,7 @@
         <div>
             <label for="meal-plan-select">Select a Meal Plan:</label>
             <select id="meal-plan-select" v-model="selectedMealPlanId" @change="onMealPlanChange">
-                <option v-for="plan in mealPlans" :value="plan.id" :key="plan.id">{{ plan.date }}</option>
+                <option v-for="plan in mealPlans" :value="plan.id" :key="plan.id">{{ formatDate(plan.date) }}</option>
             </select>
         </div>
         <div v-if="selectedMealPlan">
@@ -75,6 +75,10 @@ export default {
         onMealPlanChange() {
             console.log('Selected Meal Plan ID:', this.selectedMealPlanId);
         },
+        formatDate(date){
+            const options = {year: 'numeric', month: 'long', day: 'numeric'};
+            return new Date(date).toLocaleDateString(undefined, options);
+        }
     },
 };
 </script>

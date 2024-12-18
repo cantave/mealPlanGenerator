@@ -27,8 +27,24 @@
                                 }}</li>
                         </ul>
                     </div>
-                    
+
                     <a :href="meal.strYoutube" target="_blank">Watch Video</a>
+                    <label>
+                        <span>Select Meal Plan:</span>
+                        <select v-model="mealPlanIds[meal.idMeal]">
+                            <option v-for="plan in mealPlans" :value="plan.id" :key="plan.id">{{ formatDate(plan.date)
+                                }}</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span>Select Meal Time:</span>
+                        <select v-model="mealTimes[meal.idMeal]">
+                            <option value="breakfast">Breakfast</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="dinner">Dinner</option>
+                        </select>
+                    </label>
+                    <button @click="addToMealPlan(meal)">Add to Meal Plan</button>
                 </li>
             </ul>
         </div>
@@ -41,13 +57,18 @@ export default {
     data() {
         return {
             mealName: '',
+            mealTimes: {},
+            mealPlanIds: {}
         };
     },
     computed: {
-        ...mapGetters(['meals']),
+        ...mapGetters(['meals', 'mealPlans']),
+    },
+    created(){
+            this.fetchUserMealPlans();
     },
     methods: {
-        ...mapActions(['fetchMealsByName', 'fetchRandomMeal']),
+        ...mapActions(['fetchMealsByName', 'fetchRandomMeal', 'addMealToMealPlan', 'fetchUserMealPlans']),
         searchMeals() {
             //console.log('Searching for meals:', this.mealName)
             if (this.mealName) {
@@ -71,6 +92,34 @@ export default {
             }
             return ingredients;
         },
+        formatMealForBackend(meal) {
+            const ingredients = this.getIngredients(meal);
+            return {
+                name: meal.strMeal,
+                description: `${meal.strCategory} - ${meal.strArea}`,
+                category: meal.strCategory,
+                area: meal.strArea,
+                mealThumb: meal.strMealThumb,
+                youtube: meal.strYoutube,
+                ingredients,
+                instructions: meal.strInstructions,
+            };
+        },
+        addToMealPlan(meal) {
+            const formattedMeal = this.formatMealForBackend(meal);
+            const mealTime = this.mealTimes[meal.idMeal];
+            const mealPlanId = this.mealPlanIds[meal.idMeal];
+            //const mealPlanId = this.$store.getters.selectedMealPlanId;
+            if (mealPlanId) {
+                this.addMealToMealPlan({ meal: formattedMeal, mealTime, mealPlanId });
+            } else {
+                alert("Please select a meal plan first.");
+            }
+        },
+        formatDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(date).toLocaleDateString(undefined, options);
+        }
     },
 };
 </script>

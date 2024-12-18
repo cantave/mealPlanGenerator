@@ -1,6 +1,8 @@
 package com.cantave.mealPlanGenerator.models;
 
 import jakarta.persistence.*;
+
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,9 +24,9 @@ public class MealPlan {
     @ElementCollection
     private List<String> dinner;
 
-    private String date;
+    private Date date;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "meal_plan_recipes",
             joinColumns = @JoinColumn(name = "meal_plan_id"),
@@ -72,11 +74,11 @@ public class MealPlan {
         this.dinner = dinner;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

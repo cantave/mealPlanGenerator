@@ -96,6 +96,7 @@ export default {
         async generatePlan() {
             const mealPlan = {
                 ...this.mealPlan,
+                date: new Date(this.mealPlan.date),
                 breakfast: this.mealPlan.breakfast ? this.mealPlan.breakfast.split(',').map((item) => item.trim()) : [],
                 lunch: this.mealPlan.lunch ? this.mealPlan.lunch.split(',').map((item) => item.trim()) : [],
                 dinner: this.mealPlan.dinner ? this.mealPlan.dinner.split(',').map((item) => item.trim()) : [],

@@ -4,6 +4,7 @@ import com.cantave.mealPlanGenerator.filter.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/meal-plan/**").authenticated()
                         .requestMatchers("/api/mealplans/**").authenticated()
                         .requestMatchers("/api/user/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/recipes/add-to-meal-plan").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
