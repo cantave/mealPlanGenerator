@@ -35,20 +35,30 @@ public class RecipeService {
         Recipe recipe = recipeRepository.findById(id).orElse(null);
         if (recipe != null) {
             recipe.setName(recipeDetails.getName());
-            recipe.setDescription((recipe.getDescription()));
+            recipe.setDescription(recipeDetails.getDescription());
             recipe.setCategory(recipeDetails.getCategory());
             recipe.setArea(recipeDetails.getArea());
             recipe.setMealThumb(recipeDetails.getMealThumb());
             recipe.setYoutube(recipeDetails.getYoutube());
             recipe.setIngredients(recipeDetails.getIngredients());
             recipe.setMeasures(recipeDetails.getMeasures());
-            recipe.setInstructions(recipe.getInstructions());
+            recipe.setInstructions(recipeDetails.getInstructions());
             return recipeRepository.save(recipe);
         }
         return null;
     }
 
-    public void deleteRecipe(Long id) {
+    public void deleteRecipe(Long id){
+        List<MealPlan> mealPlans = mealPlanRepository.findAll();
+
+        for(MealPlan mealPlan : mealPlans){
+            mealPlan.getBreakfast().removeIf(recipe -> recipe.getId().equals(id));
+            mealPlan.getLunch().removeIf(recipe -> recipe.getId().equals(id));
+            mealPlan.getDinner().removeIf(recipe -> recipe.getId().equals(id));
+            mealPlan.getRecipes().removeIf(recipe -> recipe.getId().equals(id));
+            mealPlanRepository.save(mealPlan);
+        }
+
         recipeRepository.deleteById(id);
     }
 
@@ -64,13 +74,13 @@ public class RecipeService {
 
         switch (mealTime.toLowerCase()) {
             case "breakfast":
-                mealPlan.getBreakfast().add(savedRecipe.getName());
+                mealPlan.getBreakfast().add(savedRecipe);
                 break;
             case "lunch":
-                mealPlan.getLunch().add(savedRecipe.getName());
+                mealPlan.getLunch().add(savedRecipe);
                 break;
             case "dinner":
-                mealPlan.getDinner().add(savedRecipe.getName());
+                mealPlan.getDinner().add(savedRecipe);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid meal time: " + mealTime);

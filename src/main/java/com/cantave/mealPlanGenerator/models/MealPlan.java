@@ -15,14 +15,29 @@ public class MealPlan {
     @Column(nullable = false)
     private Long userId;
 
-    @ElementCollection
-    private List<String> breakfast;
+    @ManyToMany
+    @JoinTable(
+            name = "meal_plan_breakfast",
+            joinColumns = @JoinColumn(name = "meal_plan_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private List<Recipe> breakfast;
 
-    @ElementCollection
-    private List<String> lunch;
+    @ManyToMany
+    @JoinTable(
+            name = "meal_plan_lunch",
+            joinColumns = @JoinColumn(name = "meal_plan_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private List<Recipe> lunch;
 
-    @ElementCollection
-    private List<String> dinner;
+    @ManyToMany
+    @JoinTable(
+            name = "meal_plan_dinner",
+            joinColumns = @JoinColumn(name = "meal_plan_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private List<Recipe> dinner;
 
     private Date date;
 
@@ -50,27 +65,27 @@ public class MealPlan {
         this.userId = userId;
     }
 
-    public List<String> getBreakfast() {
+    public List<Recipe> getBreakfast() {
         return breakfast;
     }
 
-    public void setBreakfast(List<String> breakfast) {
+    public void setBreakfast(List<Recipe> breakfast) {
         this.breakfast = breakfast;
     }
 
-    public List<String> getLunch() {
+    public List<Recipe> getLunch() {
         return lunch;
     }
 
-    public void setLunch(List<String> lunch) {
+    public void setLunch(List<Recipe> lunch) {
         this.lunch = lunch;
     }
 
-    public List<String> getDinner() {
+    public List<Recipe> getDinner() {
         return dinner;
     }
 
-    public void setDinner(List<String> dinner) {
+    public void setDinner(List<Recipe> dinner) {
         this.dinner = dinner;
     }
 

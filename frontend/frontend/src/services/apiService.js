@@ -104,6 +104,26 @@ export const updateRecipe = async (id, recipe) => {
   }
 };
 
+export const deleteRecipe = async (recipeId) => {
+  try {
+    await axiosInstance.delete(`/recipes/${recipeId}`);
+  } catch (error) {
+    console.error("Error deleting recipe:", error.message);
+    throw error;
+  }
+};
+
+export const removeRecipeFromMealPlan = async (mealPlanId, recipeId) => {
+  try {
+    await axiosInstance.put(`/mealplans/${mealPlanId}/remove-recipe`, {
+      recipeId,
+    });
+  } catch (error) {
+    console.error("Error removing recipe from meal plan:", error.message);
+    throw error;
+  }
+};
+
 export const getUserProfile = async (id) => {
   try {
     const response = await axiosInstance.get(`/user/${id}`);

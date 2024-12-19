@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/mealplans")
@@ -19,23 +20,29 @@ public class MealPlanController {
     }
 
     @GetMapping("/{id}")
-    public MealPlan getMealPlanById(@PathVariable Long id){
+    public MealPlan getMealPlanById(@PathVariable Long id) {
         return mealPlanService.getMealPlanById(id);
     }
 
     @PostMapping
-    public MealPlan generateMealPlan(@RequestBody MealPlan mealPlan){
+    public MealPlan generateMealPlan(@RequestBody MealPlan mealPlan) {
         return mealPlanService.generateMealPlan(mealPlan);
     }
 
     @PostMapping("/{id}")
-    public MealPlan updateMealPlan(@PathVariable Long id, @RequestBody MealPlan mealPlanDetails){
+    public MealPlan updateMealPlan(@PathVariable Long id, @RequestBody MealPlan mealPlanDetails) {
         return mealPlanService.updateMealPlan(id, mealPlanDetails);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMealPlan(@PathVariable Long id){
+    public void deleteMealPlan(@PathVariable Long id) {
         mealPlanService.deleteMealPlan(id);
+    }
+
+    @PutMapping("/{id}/remove-recipe")
+    public MealPlan removeRecipeFromMealPlan(@PathVariable Long id, @RequestBody Map<String, Long> request) {
+        Long recipeId = request.get("recipeId");
+        return mealPlanService.removeRecipeFromMealPlan(id, recipeId);
     }
 
 

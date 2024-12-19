@@ -9,6 +9,8 @@ import {
   deleteUserProfile,
   addRecipe,
   addMealToMealPlan,
+  removeRecipeFromMealPlan as apiRemoveRecipeFromMealPlan,
+  deleteRecipe,
 } from "@/services/apiService";
 import { EventBus } from "@/eventBus";
 import {
@@ -60,6 +62,9 @@ const store = createStore({
     setRecipe(state, recipe) {
       state.recipe = recipe;
     },
+    removeRecipeFromState(state, recipeId) {
+      state.recipes = state.recipes.filter((recipe) => recipe.id !== recipeId);
+    },
     setSelectedMealPlanId(state, mealPlanId) {
       state.selectedMealPlanId = mealPlanId;
     },
@@ -71,6 +76,14 @@ const store = createStore({
     },
     setMealPlans(state, mealPlans) {
       state.mealPlans = mealPlans;
+    },
+    updateMealPlan(state, mealPlan) {
+      const index = state.mealPlans.findIndex(
+        (plan) => plan.id === mealPlan.id
+      );
+      if (index != -1) {
+        state.mealPlans.splice(index, 1, mealPlan);
+      }
     },
     removeMealPlan(state, mealPlanId) {
       state.mealPlans = state.mealPlans.filter(
@@ -93,6 +106,38 @@ const store = createStore({
         return response;
       } catch (error) {
         console.error("Error adding recipe:", error.message);
+      }
+    },
+    async deleteRecipe({ commit }, recipeId) {
+      try {
+        if (
+          confirm(
+            "Are you sure you want to delete this recipe? This action cannot be undone."
+          )
+        ) {
+          await deleteRecipe(recipeId);
+          commit("removeRecipeFromState", recipeId);
+          alert("Recipe deleted successfully.");
+        }
+      } catch (error) {
+        console.error("Error deleting recipe:", error.message);
+      }
+    },
+    async removeRecipeFromMealPlan(
+      { commit, state },
+      { mealPlanId, recipeId }
+    ) {
+      try {
+        await apiRemoveRecipeFromMealPlan(mealPlanId, recipeId);
+        const mealPlan = state.mealPlans.find((plan) => plan.id === mealPlanId);
+        if (mealPlan) {
+          mealPlan.recipes = mealPlan.recipes.filter(
+            (recipe) => recipe.id !== recipeId
+          );
+          commit("updateMealPlan", mealPlan);
+        }
+      } catch (error) {
+        console.error("Error removing recipe from meal plan:", error.message);
       }
     },
     async fetchMealsByName({ commit }, mealName) {

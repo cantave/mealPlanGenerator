@@ -17,7 +17,9 @@
                     <div>
                         <p><strong>Ingredients:</strong></p>
                         <ul>
-                            <li v-for="(ingredient, index) in getIngredients(meal)" :key="index">{{ ingredient }}</li>
+                            <li v-for="(ingredient, index) in getIngredientsAndMeasures(meal).ingredients" :key="index">
+                                {{ ingredient }} - {{ getIngredientsAndMeasures(meal).measures[index] }}
+                            </li>
                         </ul>
                     </div>
                     <div>
@@ -64,8 +66,8 @@ export default {
     computed: {
         ...mapGetters(['meals', 'mealPlans']),
     },
-    created(){
-            this.fetchUserMealPlans();
+    created() {
+        this.fetchUserMealPlans();
     },
     methods: {
         ...mapActions(['fetchMealsByName', 'fetchRandomMeal', 'addMealToMealPlan', 'fetchUserMealPlans']),
@@ -81,19 +83,21 @@ export default {
             }
             return instructions.split(/\r?\n\d+ |\r?\n/).filter(Boolean);
         },
-        getIngredients(meal) {
+        getIngredientsAndMeasures(meal) {
             const ingredients = [];
+            const measures = [];
             for (let i = 1; i <= 20; i++) {
                 const ingredient = meal[`strIngredient${i}`];
                 const measure = meal[`strMeasure${i}`];
                 if (ingredient) {
-                    ingredients.push(`${ingredient} - ${measure}`);
+                    ingredients.push(ingredient);
+                    measures.push(measure || "");
                 }
             }
-            return ingredients;
+            return { ingredients, measures };
         },
         formatMealForBackend(meal) {
-            const ingredients = this.getIngredients(meal);
+            const { ingredients, measures } = this.getIngredientsAndMeasures(meal);
             return {
                 name: meal.strMeal,
                 description: `${meal.strCategory} - ${meal.strArea}`,
@@ -102,6 +106,7 @@ export default {
                 mealThumb: meal.strMealThumb,
                 youtube: meal.strYoutube,
                 ingredients,
+                measures,
                 instructions: meal.strInstructions,
             };
         },

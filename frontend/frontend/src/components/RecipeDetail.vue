@@ -5,10 +5,13 @@
             <p>{{ recipe.description }}</p>
             <h3>Ingredients</h3>
             <ul>
-                <li v-for="ingredient in recipe.ingredients" :key="ingredient">{{ ingredient }}</li>
+                <li v-for="(ingredient, index) in recipe.ingredients" :key="index">
+                    {{ ingredient }} - {{ recipe.measures[index] }}</li>
             </ul>
             <h3>Instructions</h3>
-            <p>{{ recipe.instructions }}</p>
+            <ul>
+                <li v-for="(step, index) in splitInstructions(recipe.instructions)" :key="index">{{ step }}</li>
+            </ul>
             <router-link v-if="recipe.id" :to="{ name: 'EditRecipeView', params: { id: recipe.id } }">Edit</router-link>
         </div>
     </div>
@@ -22,7 +25,13 @@ export default {
         ...mapGetters(['recipe'])
     },
     methods: {
-        ...mapActions(['fetchRecipeById'])
+        ...mapActions(['fetchRecipeById']),
+        splitInstructions(instructions) {
+            if (!instructions) {
+                return [];
+            }
+            return instructions.split(/\r?\n\d+ |\r?\n/).filter(Boolean);
+        }
     },
     created() {
         const id = this.$route.params.id;

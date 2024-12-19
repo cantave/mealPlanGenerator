@@ -5,6 +5,9 @@
             <li v-for="recipe in recipes" :key="recipe.id">
                 <router-link :to="{ name: 'RecipeDetailView', params: { id: recipe.id } }">{{ recipe.name
                     }}</router-link>
+                <span @click="deleteRecipe(recipe.id)">
+                    <img :src="trashBin" alt="trash-bin">
+                </span>
             </li>
         </ul>
     </div>
@@ -12,13 +15,17 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import trashBin from '@/assets/trash-bin.png';
 
 export default {
     computed: {
-        ...mapGetters(['recipes'])
+        ...mapGetters(['recipes']),
+        trashBin() {
+            return trashBin;
+        },
     },
     methods: {
-        ...mapActions(['fetchRecipes'])
+        ...mapActions(['fetchRecipes', 'deleteRecipe'])
     },
     created() {
         this.fetchRecipes();
@@ -37,6 +44,9 @@ ul {
 }
 
 li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0.5em;
     background: #f9f9f9;
     margin-bottom: 0.5em;
@@ -50,5 +60,15 @@ a {
 
 a:hover {
     color: #000;
+}
+
+img {
+    width: 20px;
+    height: auto;
+    transition: filter 0.3s ease;
+}
+
+img:hover {
+    filter: invert(24%) sepia(77%) saturate(5000%) hue-rotate(1deg) brightness(96%) contrast(97%);
 }
 </style>
